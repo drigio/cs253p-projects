@@ -1,19 +1,3 @@
-# Sketch
-# Classes : MusicLibrary, MusicStore, FileStore, Application
-# MusicLibrary:
-#   store, location, print, find, remove, add
-# Songs:
-#   title, artist, year,
-#
-# MusicStore:
-#   Songs[], crunch_up, crunch_down, find, remove, add
-#
-# FileStore:
-#   location, readfile, writefile,
-#
-# Application:
-#   start, stop, read_input, write_output, evaluate_command,
-
 import json
 import os
 import sys
@@ -104,9 +88,6 @@ class MusicStore:
         for i in range(songs_len-1, idx-1, -1):
             self._songs[i+1] = self._songs[i]
 
-# MusicLibrary:
-#   store, location, print, find, remove, add
-
 
 class MusicLibrary:
 
@@ -114,11 +95,6 @@ class MusicLibrary:
         if name is not None:
             self._name = name
             self._store = self.load_library()
-            # self._store.add_song(Song("Zest", "Ved", "2024"))
-            # print(self._store.remove_song_by_title("Last Last"))
-            # print(self.print_library())
-            # print(self.find_song("As It Ws"))
-            # self.save_library()
 
     @property
     def name(self):
@@ -272,13 +248,6 @@ class Application:
 
 def main():
     app = Application(sys.argv[1])
-    # FileStore.write_file(['(Hello, World)', '(Testing)'], sys.argv[1])
-    # data = FileStore.read_file(sys.argv[1])
-    # print(type(data), data)
-    # check = []
-    # a = Song("SOme", "Ved", 2024)
-    # check.append(a)
-    # print(a)
     app.start()
 
 
