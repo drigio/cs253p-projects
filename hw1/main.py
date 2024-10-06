@@ -1,30 +1,31 @@
-# Sketch 
+# Sketch
 # Classes : MusicLibrary, MusicStore, FileStore, Application
 # MusicLibrary:
 #   store, location, print, find, remove, add
 # Songs:
-#   title, artist, year, 
-# 
+#   title, artist, year,
+#
 # MusicStore:
 #   Songs[], crunch_up, crunch_down, find, remove, add
-# 
+#
 # FileStore:
-#   location, readfile, writefile, 
-#   
+#   location, readfile, writefile,
+#
 # Application:
-#   start, stop, read_input, write_output, evaluate_command, 
+#   start, stop, read_input, write_output, evaluate_command,
 
 import json
 import os
 import sys
 
+
 class Song:
-    
+
     def __init__(self, title=None, artist=None, year=None):
         self._title = title
         self._artist = artist
         self._year = year
-    
+
     @property
     def title(self):
         return self._title
@@ -32,7 +33,7 @@ class Song:
     @title.setter
     def title(self, title):
         self._title = title
-    
+
     @property
     def artist(self):
         return self._artist
@@ -40,7 +41,7 @@ class Song:
     @artist.setter
     def artist(self, artist):
         self._artist = artist
-    
+
     @property
     def year(self):
         return self._year
@@ -48,15 +49,15 @@ class Song:
     @year.setter
     def year(self, year):
         self._year = year
-    
+
     def to_tuple(self):
         return (self._title, self._artist, self._year)
-    
-    
+
+
 class MusicStore:
     def __init__(self, songs=[]):
         self._songs = songs
-    
+
     @property
     def songs(self):
         return self._songs
@@ -91,21 +92,21 @@ class MusicStore:
             self.crunch_down_from_idx(index)
             self._songs[index] = new_song
             return True, "Song Added Successfully"
-        
+
     def crunch_up_from_idx(self, idx):
         songs_len = len(self._songs)
         for i in range(idx, songs_len-1):
-            self._songs[i] = self._songs[i+1]              
-            
+            self._songs[i] = self._songs[i+1]
 
     def crunch_down_from_idx(self, idx):
         songs_len = len(self._songs)
         self._songs.append("")
         for i in range(songs_len-1, idx-1, -1):
-            self._songs[i+1] = self._songs[i]  
-    
+            self._songs[i+1] = self._songs[i]
+
 # MusicLibrary:
 #   store, location, print, find, remove, add
+
 
 class MusicLibrary:
 
@@ -119,11 +120,10 @@ class MusicLibrary:
             # print(self.find_song("As It Ws"))
             # self.save_library()
 
-
     @property
     def name(self):
         return self._name
-    
+
     @property
     def store(self):
         return self._store
@@ -137,12 +137,12 @@ class MusicLibrary:
             FileStore.write_file([], self._name)
             store = MusicStore()
         return store
-    
+
     def save_library(self):
         content = [f"{song.to_tuple()}" for song in self._store.songs]
         response = f"Writing library to disk.\n"
         if FileStore.write_file(content, self.name) == True:
-            response += f"Library written to disk successfully.\n"         
+            response += f"Library written to disk successfully.\n"
         return response
 
     def add_song(self):
@@ -152,7 +152,7 @@ class MusicLibrary:
         song = Song(title, artist, year)
         status, message = self._store.add_song(song)
         return f"Operation was {status} : {message}"
-    
+
     def remove_song(self):
         title = Application.read_cmd("Enter Song Title")
         status, message = self._store.remove_song_by_title(title)
@@ -175,7 +175,7 @@ class MusicLibrary:
         for song in self._store.songs:
             response += f"| {song.title : <20} | {song.artist : <20} | {song.year : <15} | \n"
         return response
-        
+
     def find_song(self):
         title = Application.read_cmd("Enter Song Title")
         status, index = self._store.find_idx_of_song_with_name(title)
@@ -187,7 +187,7 @@ class MusicLibrary:
 class FileStore:
     def __init__(self):
         pass
-    
+
     @staticmethod
     def write_file(content, filename):
         try:
@@ -197,7 +197,7 @@ class FileStore:
         except Exception as e:
             Application.write_op(e)
             return False
-    
+
     @staticmethod
     def read_file(filename):
         try:
@@ -215,6 +215,7 @@ class FileStore:
         if os.path.exists(filename):
             return True
         return False
+
 
 class Application:
 
@@ -257,7 +258,7 @@ class Application:
         response = self._music_library.save_library()
         response += f"Exiting Application."
         return response
-    
+
     @staticmethod
     def read_cmd(text):
         return input(f"{text}: ").strip()
@@ -279,6 +280,7 @@ def main():
     # check.append(a)
     # print(a)
     app.start()
+
 
 if __name__ == '__main__':
     main()
